@@ -1,4 +1,4 @@
-import {MailOutlined} from "@ant-design/icons";
+import {BellOutlined, MailOutlined} from "@ant-design/icons";
 import { Space, Image, Typography } from "antd";
 function AppHeader() {
     return ( 
@@ -8,6 +8,7 @@ function AppHeader() {
         <Typography.Title>HR System</Typography.Title>
         <Space>
             <MailOutlined style={{fontSize: 24}}></MailOutlined>
+            <BellOutlined style={{fontSize: 24}}></BellOutlined>
         </Space>
         </div>
      );
