@@ -1,45 +1,28 @@
-import { CalendarOutlined, DashboardOutlined, LogoutOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
+import { CalendarOutlined, DashboardOutlined, PoweroffOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
-function SideMenu() {
-    const navigate = useNavigate()
-    return (
-      <div className="SideMenu">
-        <Menu
-          onClick={(item) => {
-            if(item.key === "/logout"){
-                alert("Logout Success!");
-            } else {
-                navigate(item.key);
-            }
-            
-          }}
-          items={[
-            {
-              label: "Dashboard",
-              icon: <DashboardOutlined />,
-              key: "/"
-            },
-            {
-              label: "Leave",
-              icon: <CalendarOutlined />,
-              key: "/leave"
-            },
-            {
-              label: "Profile",
-              icon: <UserOutlined />,
-              key: "/profile"
-            },
-            {
-              label: "Logout",
-              icon: <PoweroffOutlined />,
-              danger: true,
-              key: "/logout"
-            }
-          ]}
-        ></Menu>
-      </div>
-    );
-  }
-  
+
+function SideMenu({ logout }) {
+  const navigate = useNavigate();
+
+  return (
+    <div className="SideMenu">
+      <Menu
+        onClick={(item) => {
+          if (item.key === "/logout") {
+            logout();
+          } else {
+            navigate(item.key);
+          }
+        }}
+      >
+        <Menu.Item key="/dashboard" icon={<DashboardOutlined />} label="Dashboard" />
+        <Menu.Item key="/leave" icon={<CalendarOutlined />} label="Leave" />
+        <Menu.Item key="/profile" icon={<UserOutlined />} label="Profile" />
+        <Menu.Item key="/logout" icon={<PoweroffOutlined />} danger label="Logout" />
+      </Menu>
+    </div>
+  );
+}
+
 export default SideMenu;
