@@ -1,9 +1,9 @@
 import { Space } from "antd";
 import './App.css';
-import AppFooter from './Components/AppFooter/AppFooter';
-import AppHeader from './Components/AppHeader/AppHeader';
-import SideMenu from './Components/SideMenu/SideMenu';
-import PageContent from "./Components/PageContent/PageContent";
+import AppFooter from './Components/AppFooter';
+import AppHeader from './Components/AppHeader';
+import SideMenu from './Components/SideMenu';
+import PageContent from "./Components/PageContent";
 import Login from "./Pages/Login";
 
 import { useState } from "react";

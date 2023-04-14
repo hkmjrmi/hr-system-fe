@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Leave from "../../Pages/Leave";
-import Dashboard from "../../Pages/Dashboard";
-import Profile from "../../Pages/Profile";
-import ViewCalendar from "../ViewCalendar";
+import Leave from "../Pages/Leave";
+import Dashboard from "../Pages/Dashboard";
+import Profile from "../Pages/Profile";
+import ViewCalendar from "../Pages/ViewCalendar";
 
 function AppRoutes() {
     return ( 

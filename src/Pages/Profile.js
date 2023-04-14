@@ -1,5 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Card, Typography } from "antd";
+import { Avatar, Card } from "antd";
 
 function Profile() {
    
@@ -13,8 +13,8 @@ function Profile() {
           title="John Doe"
           description="johndoe@example.com"
         />
-        <p>Contact: 123-456-7890</p>
-        <p>Address: 123 Main St, Anytown USA</p>
+        <p>Contact: 01112307067</p>
+        <p>Email Address: john.doe@gmail.com</p>
       </Card>
     </div>
   );

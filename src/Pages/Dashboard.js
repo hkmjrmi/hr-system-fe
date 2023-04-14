@@ -1,117 +1,142 @@
-import { Button, Card, DatePicker, Form, Input, InputNumber, Modal, Radio, Select, Space, Statistic, Table, Typography } from "antd";
+import { Button, Card, DatePicker, Form, Input, InputNumber, Modal, Result, Select, Space, Statistic, Table, Typography } from "antd";
 import { useState } from "react";
 
 function Dashboard() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
+  const { Option } = Select;
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
-    return ( 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
     <div>
-        <Space size={20} direction="vertical">
+      <Space size={20} direction="vertical">
         <Typography.Title level={4}>Dashboard</Typography.Title>
         <Space direction="horizontal">
-            <DashboardCard title={"Annual Leave"} value={18} />
-            <DashboardCard title={"Medical Leave"} value={30} />
-            <DashboardCard title={"Emergency Leave"} value={5} />
+          <DashboardCard title={"Annual Leave"} value={18} />
+          <DashboardCard title={"Medical Leave"} value={30} />
+          <DashboardCard title={"Emergency Leave"} value={5} />
         </Space>
         <Space>
-            <RecentLeaves showModal={showModal} />
+          <RecentLeaves showModal={showModal} isModalOpen={isModalOpen} closeModal={closeModal} />
         </Space>
-        </Space>
-
-        <Modal title="Request New Leave" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-           <LeaveForm/>
-        </Modal>
-    </div> );
+      </Space>
+    </div>
+  );
 }
 
-function DashboardCard({title, value}){
-    return (
-        <Card>
-            <Space direction="horizontal">
-            <Statistic title={title} value={value}/>
-            </Space>
-        </Card>
-        
-    )
+function DashboardCard({ title, value }) {
+  return (
+    <Card>
+      <Space direction="horizontal">
+        <Statistic title={title} value={value} />
+      </Space>
+    </Card>
+  );
 }
 
-function LeaveForm() {
-    const [form] = Form.useForm();
+function RecentLeaves({ showModal, isModalOpen, closeModal }) {
+  // Table structure for demo purposes
+  const columns = [
+    {
+      title: "Leave Type",
+    },
+    {
+      title: "From",
+    },
+    {
+      title: "To",
+    },
+    {
+      title: "NumDays",
+    },
+    {
+      title: "Status",
+    },
+    {
+      title: "Approved By",
+    },
+  ];
 
-    const handleSubmit = (values) => {
-        console.log(values);
-    };
+  return (
+    <>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography.Text>Recent Leaves</Typography.Text>
+        <Button type="primary" onClick={showModal} style={{ marginBottom: "10px" }}>
+          Request New Leave
+        </Button>
+      </div>
+      <Table columns={columns} />
 
-    return (
-        <Form form={form} onFinish={handleSubmit} layout="vertical">
-            <Form.Item label="Leave Type" name="leaveType" rules={[{ required: true, message: 'Please select a leave type' }]}>
-                <Select placeholder="Select leave type">
-                    <Select.Option value="annual">Annual Leave</Select.Option>
-                    <Select.Option value="medical">Medical Leave</Select.Option>
-                    <Select.Option value="emergency">Emergency Leave</Select.Option>
-                </Select>
-            </Form.Item> 
-            <Form.Item label="From" name="fromDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                <DatePicker style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item label="To" name="toDate" rules={[{ required: true, message: 'Please select a date' }]}>
-                <DatePicker style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item label="Number of days">
-                <InputNumber min={1} max={30} defaultValue={1} />
-            </Form.Item>
-            <Form.Item label="Reason" name="reason">
-                <textarea style={{ width: '100%' }} />
-            </Form.Item>
-            </Form>
-    )
+      <Modal title="Request New Leave" open={isModalOpen} onCancel={closeModal} footer={null}>
+        <LeaveForm closeModal={closeModal} />
+      </Modal>
+    </>
+  );
 }
 
-function RecentLeaves({ showModal }) {
-    const columns = [
-      {
-        title: "Leave Type",
-      },
-      {
-        title: "From",
-      },
-      {
-        title: "To",
-      },
-      {
-        title: "NumDays",
-      },
-      {
-        title: "Status",
-      },
-      {
-        title: "Approved By",
-      },
-    ];
-  
-    return (
-      <>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography.Text>Recent Leaves</Typography.Text>
-          <Button type="primary" onClick={showModal} style={{ marginBottom: "10px" }}>
-            Request New Leave
-          </Button>
-        </div>
-        <Table columns={columns} />
-      </>
-    );
+function LeaveForm({ closeModal }) {
+
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const onFinish = (values) => {
+    console.log('Success:', values);
+    setSuccessMessage('Request Leave has been successfully submitted!');
+    setModalVisible(true);
+    closeModal();
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  return (
+    <>
+      <Form onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off" layout="vertical">
+        <Form.Item name="leaveType" label="Leave Type" rules={[{ required: true }]}>
+          <Select style={{width:"400px"}}>
+            <Option value="annual">Annual Leave</Option>
+            <Option value="sick">Sick Leave</Option>
+            <Option value="maternity">Maternity Leave</Option>
+            <Option value="paternity">Paternity Leave</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="from" label="From" rules={[{required: true}]}>
+          <DatePicker style={{width:"400px"}}/>
+        </Form.Item>
+        <Form.Item name="to" label="to" rules={[{required: true}]}>
+          <DatePicker style={{width:"400px"}}/>
+        </Form.Item>
+        <Form.Item name="days" label="Number of Days" rules={[{required: true}]}>
+          <InputNumber style={{width:"400px"}}/>
+        </Form.Item>
+        <Form.Item name="reasons" label="Reasons" rules={[{required: true}]}>
+          <Input style={{width:"400px"}}/>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">Submit</Button>
+        </Form.Item>
+      </Form>
+
+      <Modal
+        title="Leave Form Result"
+        open={modalVisible}
+        onOk={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+      >
+        <Result status="success" title={successMessage} />
+      </Modal>
+    </>
+  )
 }
 
 
